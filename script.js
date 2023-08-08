@@ -1,12 +1,12 @@
-var multiple = document.getElementById("questions")
-var startBtnEl = document.getElementById("startBtn")
-var intro = document.getElementById("instruct")
+var multiple = document.getElementById("answer-buttons")
+var startBtnEl = document.getElementById("start-btn")
 var interval
 var clock = 60
 var timer = document.getElementById("time")
 var cueCounter = 0
-var initials = document.getElementById("userId")
-var gameOver = document.getElementById("endGame")
+var initials = document.getElementById("initials")
+var gameOver = document.getElementById("end-game")
+var container = document.getElementById("question-container")
 var clickSub = document.getElementById("submit")
 
 
@@ -23,6 +23,12 @@ var multipleQuestions = [
         q:"what is the capital of Florida?",
         a: ["orlando", "miami","new york", "tallahassee"] ,
         c: "tallahassee"
+    },
+    {
+        q:"what kind of class are you taking?",
+        a: ["math", "history", "business", "coding"] ,
+        c: "coding"
+
     }
 
 ] 
@@ -30,10 +36,10 @@ var multipleQuestions = [
 
 function startHandler () {
   //display question and answers
-  multiple.classList.remove("hide")
+  container.classList.remove("hide")
   displayQuestions()
   //hide start button and directions
-  intro.classList.add("hide")
+ startBtnEl.classList.add("hide")
 
   // start a timer
   startTimer()
@@ -87,7 +93,7 @@ if(!event.target.matches("button")){
 }
 }
  function endGame() {
-    multiple.classList.add("hide")
+    container.classList.add("hide")
     clearInterval(interval)
     gameOver.classList.remove("hide")
  }
@@ -95,6 +101,14 @@ if(!event.target.matches("button")){
 function scoreHandler(){
     var input = initials.value
     console.log(input) 
+    var storage = JSON.parse(localStorage.getItem("highScore"))|| []
+    var score = {
+        initials:input,
+        score:clock
+    } 
+    storage.push(score)
+    localStorage.setItem("highScore",JSON.stringify(storage))
+    window.location.href ="score.html"
 }
 
 clickSub.addEventListener("click", scoreHandler)
